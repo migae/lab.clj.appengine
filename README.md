@@ -17,7 +17,34 @@ minimal Clojure-on-GAE
 1.  edit .dir-locals.el and place it in <proj>/src (e.g. compojure/src/.dir-locals.el)
 2.  put (migae.el) in your emacs load path and byte compile
     it (see comments in migae.el for installation instructions)
+4.  edit `src/main/clojure/migae/filter.clj` to reload the files you want to work on
+3.  make sure the `<filter-mapping>` stanza in `WEB-INF/web.xml` is enabled
 
+Now whenever you edit a source file listed in `filter.clj`, migae.el
+will copy it to `WEB-INF/classes`, and refreshing the webpage will run
+the filter, which will reload the source file.  Note that you can
+control reloading by changing the `<url-pattern>` of the filter mapping in
+`web.xml`.
+
+This is required because the GAE dev server will only look in
+`build/exploded-app/` for files.  Since the `build/` hiearchy is
+constructed dynamically at compile/run time, we cannot edit in place -
+we have to copy from the `src` tree to the `build/exploded-app` tree.
+
+To verify that everything is working, run the dev server for the
+swagger subproject (`$ ./gradlew s:aRun`) and load `localhost:8080` in
+your browser.  Then edit `core_impl.clj` and change something visible,
+e.g. one of the `:description` values.  Then reload the webpage and
+you should see the change (almost) immediately.
+
+Try adding a route, e.g. within the `math` context:
+```
+    (GET* "/foo" []
+          (ok "bar"))
+```
+
+Needless to say, before uploading to the GAE servers, you should
+disable the filter and run `./gradlew clean` to remove the `.clj` files.
 
 # running
 
