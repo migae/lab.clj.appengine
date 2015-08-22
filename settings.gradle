@@ -1,1 +1,1 @@
-include ':minimal', ':compojure', ':swagger'
+include ':compojure', ':swagger'
