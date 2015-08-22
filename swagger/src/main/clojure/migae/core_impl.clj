@@ -10,19 +10,19 @@
 (defn the-docs []
   (swagger-docs
    {:info {:title "Sample Api (New!  Improved!  With Special GAE Enzymes!)"
-           :description "Compojure Api sample GAE application"}
-    :tags [{:name "math", :description "GAE math with parameters"}
+           :description "<a href='https://github.com/metosin/compojure-api'>Compojure Api</a> sample GAE application"}
+    :tags [{:name "math", :description "math with parameters"}
            {:name "echo", :description "request echoes"}
-           {:name "pizza", :description "GAE pizza Api it is."}]}))
+           {:name "pizza", :description "pizza Api it is."}]}))
 
 (defapi core-api
   (swagger-ui)
   (the-docs)
 
   {:formats [:edn]}
+
   (context* "/math" []
     :tags ["math"]
-
     (GET* "/plus" []
       :return Total
       :query-params [x :- Long, y :- Long]
