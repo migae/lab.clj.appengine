@@ -10,6 +10,7 @@ dependencies {
     appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.25'
     compile 'javax.servlet:servlet-api:2.5'
     compile 'org.clojure:clojure:1.7.0'
+    compile 'ns-tracker:ns-tracker:0.3.0'
 }
 
 appengine {
