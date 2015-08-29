@@ -23,6 +23,10 @@ turned into something else.
 
 # examples
 
+Currently these examples only demonstrate Clojure on GAE; they do not
+use any of the services libraries (datastore, memcache, etc.)  Demos
+for those services are under development.
+
 * [ringless](ringless) - simple servlet using only java interop, no ring/compojure
 * [ringish](ringish) -  servlet using [ring](https://github.com/ring-clojure/ring)
 * [compojure](compojure) - [compojure](https://github.com/weavejester/compojure) on GAE example, two servlets
