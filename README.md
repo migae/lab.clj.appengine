@@ -93,6 +93,7 @@ brute force way to do this is `(defn -service [this rqst resp] ...)`,
 `defservice` macro that makes this much easier:
 
 ``` java
+;; src/main/clojure/migae/echo.clj
 (defroutes echo-routes
 ...
   )
