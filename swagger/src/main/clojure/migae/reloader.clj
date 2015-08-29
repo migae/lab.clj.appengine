@@ -1,20 +1,21 @@
-(ns migae.filter
+(ns migae.reloader
   (:import (javax.servlet Filter FilterChain FilterConfig
                           ServletRequest ServletResponse))
-  (:gen-class :implements [javax.servlet.Filter]))
+  (:require [ns-tracker.core :refer :all]))
+
+(println "ring reloading reloader")
 
 (defn -init [^Filter this ^FilterConfig cfg])
 
 (defn -destroy [^Filter this])
+
+(def modified-namespaces (ns-tracker ["./"]))
 
 (defn -doFilter
   [^Filter this
    ^ServletRequest rqst
    ^ServletResponse resp
    ^FilterChain chain]
-  (do
-    (println "filter reloading files...")
-    (require 'migae.core_impl
-             :reload)
-             ;; :verbose)
-    (.doFilter chain rqst resp)))
+  (doseq [ns-sym (modified-namespaces)]
+    (require ns-sym :reload))
+    (.doFilter chain rqst resp))

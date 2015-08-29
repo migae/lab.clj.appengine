@@ -2,6 +2,8 @@
   (:require [schema.core :as s]
             [ring.swagger.schema :refer [coerce!]]))
 
+(println "reloading domain")
+
 ;; Domain
 
 (def Topping (s/enum :cheese :olives :ham :pepperoni :habanero))
@@ -42,3 +44,4 @@
 (when (empty? @pizzas)
   (add! {:name "Frutti" :price 9.50 :hot false :toppings #{:cheese :olives}})
   (add! {:name "Il Diablo" :price 12 :hot true :toppings #{:ham :habanero}}))
+
