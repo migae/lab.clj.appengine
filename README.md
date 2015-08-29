@@ -1,14 +1,20 @@
 # migae
 
-minimal Clojure-on-GAE
-
+Clojure on Google App Engine
 
 # examples
 
-* compojure - minimal compojure on GAE example, one servlet
-* swagger - minimal example using [compojure-api](https://github.com/metosin/compojure-api), a wrapper on [Swagger](http://swagger.io/)
+* [ringless](ringless) - simple servlet using only java interop, no ring/compojure
+* ringish -  servlet using [ring](https://github.com/ring-clojure/ring)
+* compojure - [compojure](https://github.com/weavejester/compojure) on GAE example, two servlets
+* swagger -
+[compojure-api-examples](https://github.com/metosin/compojure-api-examples)
+on GAE.  [compojure-api](https://github.com/metosin/compojure-api) is
+a wrapper on [Swagger](http://swagger.io/)
 
-# editing
+# quasi-repl
+
+
 
 **WARNING** If you are using emacs, you _must_ edit the paths in
   `.dir-locals.el` file in each subproject, and you must install the
@@ -17,7 +23,6 @@ minimal Clojure-on-GAE
 1.  edit .dir-locals.el and place it in <proj>/src (e.g. compojure/src/.dir-locals.el)
 2.  put (migae.el) in your emacs load path and byte compile
     it (see comments in migae.el for installation instructions)
-4.  edit `src/main/clojure/migae/filter.clj` to reload the files you want to work on
 3.  make sure the `<filter-mapping>` stanza in `WEB-INF/web.xml` is enabled
 
 Now whenever you edit a source file listed in `filter.clj`, migae.el
