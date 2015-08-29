@@ -5,16 +5,55 @@ Clojure on Google App Engine
 # examples
 
 * [ringless](ringless) - simple servlet using only java interop, no ring/compojure
-* ringish -  servlet using [ring](https://github.com/ring-clojure/ring)
-* compojure - [compojure](https://github.com/weavejester/compojure) on GAE example, two servlets
-* swagger -
+* [ringish](ringish) -  servlet using [ring](https://github.com/ring-clojure/ring)
+* [compojure](compojure) - [compojure](https://github.com/weavejester/compojure) on GAE example, two servlets
+* [swagger](swagger) -
 [compojure-api-examples](https://github.com/metosin/compojure-api-examples)
 on GAE.  [compojure-api](https://github.com/metosin/compojure-api) is
 a wrapper on [Swagger](http://swagger.io/)
 
 # quasi-repl
 
+GAE is basically a servlet container.  Due to security constraints,
+GAE prevents access to anything outside of the runtime context; for
+the dev server under the `gradle` build system, this means
+`<projroot>/build/exploded-app/`.  The `gradle` build system creates
+this context dynamically, at compile time (`./gradlew clean` deletes
+it).
 
+This means that the Clojure runtime running in a GAE app can only load
+files within that context; it cannot load from the standard
+`<projroot>/src/main/clojure` path, for example.  Furthermore,
+servlets must be AOT compiled, since the servlet container will look
+for compiled bytecode on disk when it needs to load a servlet.
+
+Fortunately, a sufficiently perverse mind can easily get around these
+two problems.  To make changed source code available for reloading by
+the Clojure runtime, we arrange to copy files from the source tree to
+the runtime context whenever they are edited and saved.  To make sure
+that AOT compilation does not interfere with code reloading, we split
+servlet definitions from implementations.  And to make sure they get
+reloaded we use the standard `ns-tracker` library in a Java Servlet
+Filter that intercepts all HTTP requests and reloads changed code
+before forwarding requests to handlers.
+
+## servlet definition
+
+
+
+``` java
+(ns migae.servlets)
+
+(gen-class :name migae.core
+           :extends javax.servlet.http.HttpServlet
+           :impl-ns migae.core)
+```
+
+
+## editing
+
+Unfortunately, the technique described here only works for emacs.  But
+it should be easy enough to adapt it.
 
 **WARNING** If you are using emacs, you _must_ edit the paths in
   `.dir-locals.el` file in each subproject, and you must install the
