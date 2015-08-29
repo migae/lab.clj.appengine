@@ -1,4 +1,4 @@
-# migae
+\# migae
 
 Clojure on Google App Engine
 
@@ -59,6 +59,12 @@ servlet definitions (using `gen-class`) from implementations.  And to
 make sure they get reloaded we use the standard `ns-tracker` library
 in a Java Servlet Filter that intercepts all HTTP requests and reloads
 changed code before forwarding requests to handlers.
+
+Oh yeah, the other thing is we use `gradle` rather than `leiningen`.
+I love leiningen, but using it doesn't make sense for GAE; the
+google-supplied gradle plugin does everything we need, and in some
+respects gradle is arguably superior to leiningen (e.g. supporting
+multiple subprojects, build flavors, etc.)
 
 ## servlet definition
 
