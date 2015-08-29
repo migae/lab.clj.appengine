@@ -17,7 +17,7 @@
              (-> (rsp/response (str "<p>" (dissoc req :body) "</p>"))
                  (rsp/content-type "text/html"))))
     (GET "/hello/:name" [name]
-         (-> (rsp/response (str "HELLO, " name))
+         (-> (rsp/response (str "Hello, " name))
              (rsp/content-type "text/html")))
     (route/not-found "<h1>Echo API not found</h1>")))
 
