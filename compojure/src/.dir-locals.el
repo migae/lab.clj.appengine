@@ -5,25 +5,22 @@
 
 ((clojure-mode
   (app . "sparky")
-  (cljsrc . "/Users/gar/migae/migae/compojure/src/main/clojure")
-  ;; gradle:
-  (cljdest . "/Users/gar/migae/migae/compojure/build/exploded-app/WEB-INF"))
- ;; maven: use this one:
- ;; (warroot . "/Users/gar/norc.dev/sparky/gae/target/sparky-1.0-SNAPSHOT/WEB-INF"))
+  (cljsrc . "~/migae/migae/compojure/src/main/clojure")
+  (cljdest . "~/migae/migae/compojure/build/exploded-app/WEB-INF"))
 
  (js-mode
   (app . "sparky")
-  (jssrc . "/Users/gar/migae/migae/compojure/src/main/webapp/js")
-  (jsdest . "/Users/gar/migae/migae/compojure/build/exploded-app/js"))
+  (jssrc . "~/migae/migae/compojure/src/main/webapp/js")
+  (jsdest . "~/migae/migae/compojure/build/exploded-app/js"))
 
  (nxml-mode
   (app . "sparky")
-  (nxmlsrc . "/Users/gar/migae/migae/compojure/src/main/webapp")
-  (nxmldest . "/Users/gar/migae/migae/compojure/build/exploded-app"))
+  (nxmlsrc . "~/migae/migae/compojure/src/main/webapp")
+  (nxmldest . "~/migae/migae/compojure/build/exploded-app"))
 
  (html-mode
   (app . "sparky")
-  (htmlsrc . "/Users/gar/migae/migae/compojure/src/main/webapp/qx")
-  (htmldest . "/Users/gar/migae/migae/compojure/build/exploded-app/qx")))
+  (htmlsrc . "~/migae/migae/compojure/src/main/webapp/qx")
+  (htmldest . "~/migae/migae/compojure/build/exploded-app/qx")))
 
 

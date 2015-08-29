@@ -5,22 +5,22 @@
 
 ((clojure-mode
   (app . "sparky")
-  (cljsrc . "/Users/gar/migae/migae/ringless/src/main/clojure")
-  (cljdest . "/Users/gar/migae/migae/ringless/build/exploded-app/WEB-INF"))
+  (cljsrc . "~/migae/migae/ringless/src/main/clojure")
+  (cljdest . "~/migae/migae/ringless/build/exploded-app/WEB-INF"))
 
  (js-mode
   (app . "sparky")
-  (jssrc . "/Users/gar/migae/migae/ringless/src/main/webapp/js")
-  (jsdest . "/Users/gar/migae/migae/ringless/build/exploded-app/js"))
+  (jssrc . "~/migae/migae/ringless/src/main/webapp/js")
+  (jsdest . "~/migae/migae/ringless/build/exploded-app/js"))
 
  (nxml-mode
   (app . "sparky")
-  (nxmlsrc . "/Users/gar/migae/migae/ringless/src/main/webapp")
-  (nxmldest . "/Users/gar/migae/migae/ringless/build/exploded-app"))
+  (nxmlsrc . "~/migae/migae/ringless/src/main/webapp")
+  (nxmldest . "~/migae/migae/ringless/build/exploded-app"))
 
  (html-mode
   (app . "sparky")
-  (htmlsrc . "/Users/gar/migae/migae/ringless/src/main/webapp/qx")
-  (htmldest . "/Users/gar/migae/migae/ringless/build/exploded-app/qx")))
+  (htmlsrc . "~/migae/migae/ringless/src/main/webapp/qx")
+  (htmldest . "~/migae/migae/ringless/build/exploded-app/qx")))
 
 
