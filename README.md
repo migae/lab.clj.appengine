@@ -62,11 +62,12 @@ That's all there is to it.  Under AOT compilation, the `:name` clause
 names the generated servlet class, and the `:impl-ns` clause names the
 Clojure implementation namespace.  At runtime, public HttpServlet
 methods will be forwarded to the implementation namespace.  The only
-such method is `service(ServletRequest req, ServletResponse res)`;
-other methods, like `doGet`, can be forwarded using the
-`:exposes-methods` key of `gen-class`.  But to use Clojure on GAE (at
-least with ring/compojure), we are only interested in the `service`
-method, so this works great.
+such method is `service(ServletRequest req, ServletResponse res)`; the
+other HttpServlet methods, like `doGet`, are `protected`, but they can
+be explicitly forwarded using the `:exposes-methods` key of
+`gen-class`.  But to use Clojure on GAE (at least with
+ring/compojure), we are only interested in the `service` method, so
+this works great.
 
 If you compile e.g. the [compojure](compojure) demo and look at the
 generated class files in
@@ -89,7 +90,7 @@ need to provide a Clojure function, in the implementation namespace,
 to which the `service` method of the servlet can forward calls.  The
 brute force way to do this is `(defn -service [this rqst resp] ...)`,
 (see the source of `echo.clj`), but fortunately `ring` provides a
-`defservice` macro that makes this very easy.
+`defservice` macro that makes this much easier.
 
 So the way it works is roughly:
 
@@ -130,10 +131,11 @@ constructed dynamically at compile/run time, we cannot edit in place -
 we have to copy from the `src` tree to the `build/exploded-app` tree.
 
 To verify that everything is working, run the dev server for the
-swagger subproject (`$ ./gradlew s:aRun`) and load `localhost:8080` in
-your browser.  Then edit `core_impl.clj` and change something visible,
-e.g. one of the `:description` values.  Then reload the webpage and
-you should see the change (almost) immediately.
+[compojure](compojure) demo subproject (`$ ./gradlew s:aRun`) and load
+`localhost:8080` in your browser.  Visit `/echo/hello/bob`, then edit
+`echo.clj` and change something visible, e.g. change "Hello" to
+"Howdy".  Then reload the webpage and you should see the change
+(almost) immediately.
 
 Try adding a route, e.g. within the `math` context:
 ```
