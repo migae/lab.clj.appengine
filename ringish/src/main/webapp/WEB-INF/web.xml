@@ -7,14 +7,14 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
   <!-- #################### -->
-  <!-- <filter-mapping> -->
-  <!--   <url-pattern>/*</url-pattern> -->
-  <!--   <filter-name>reload-filter</filter-name> -->
-  <!-- </filter-mapping> -->
-  <!-- <filter> -->
-  <!--   <filter-name>reload-filter</filter-name> -->
-  <!--   <filter-class>migae.filter</filter-class> -->
-  <!-- </filter> -->
+  <filter-mapping>
+    <url-pattern>/*</url-pattern>
+    <filter-name>reload-filter</filter-name>
+  </filter-mapping>
+  <filter>
+    <filter-name>reload-filter</filter-name>
+    <filter-class>migae.reloader</filter-class>
+  </filter>
 
   <!-- #################### -->
   <servlet-mapping>

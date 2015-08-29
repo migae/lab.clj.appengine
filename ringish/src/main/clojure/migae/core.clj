@@ -2,7 +2,6 @@
   (:require [ring.util.response :refer :all]
             [ring.util.servlet :as ring]
             [ring.handler.dump :refer :all]       ; testing only?
-            [ring.middleware.reload :refer :all]  ; testing only! from ring-devel
             [ring.middleware.params :refer [wrap-params]] ; in ring-core
             [ring.middleware.defaults :refer :all])) ; in ring-defaults
 
@@ -50,7 +49,6 @@
 
 (ring/defservice
   (-> handler
-      (wrap-reload {:dirs ["./"]}) ; testing only!
-      ;; (wrap-defaults api-defaults)
-      ;; wrap-params
+      (wrap-defaults api-defaults)
+      wrap-params
       ))
