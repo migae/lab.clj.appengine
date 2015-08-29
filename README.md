@@ -32,23 +32,77 @@ two problems.  To make changed source code available for reloading by
 the Clojure runtime, we arrange to copy files from the source tree to
 the runtime context whenever they are edited and saved.  To make sure
 that AOT compilation does not interfere with code reloading, we split
-servlet definitions from implementations.  And to make sure they get
-reloaded we use the standard `ns-tracker` library in a Java Servlet
-Filter that intercepts all HTTP requests and reloads changed code
-before forwarding requests to handlers.
+servlet definitions (using `gen-class`) from implementations.  And to
+make sure they get reloaded we use the standard `ns-tracker` library
+in a Java Servlet Filter that intercepts all HTTP requests and reloads
+changed code before forwarding requests to handlers.
 
 ## servlet definition
 
-
+The `gen-class` function allows us to define all of our servlets in a
+single Clojure source file, which by convention we're calling
+`servlets.clj`.  Here's an example from the [compojure](compojure)
+demo:
 
 ``` java
 (ns migae.servlets)
-
-(gen-class :name migae.core
+(gen-class :name migae.echo
            :extends javax.servlet.http.HttpServlet
-           :impl-ns migae.core)
+           :impl-ns migae.echo)
+(gen-class :name migae.math
+           :extends javax.servlet.http.HttpServlet
+           :prefix "math-"              ; just as demo
+           :impl-ns migae.math)
+(gen-class :name migae.reloader
+           :implements [javax.servlet.Filter]
+           :impl-ns migae.reloader)
 ```
 
+That's all there is to it.  Under AOT compilation, the `:name` clause
+names the generated servlet class, and the `:impl-ns` clause names the
+Clojure implementation namespace.  At runtime, public HttpServlet
+methods will be forwarded to the implementation namespace.  The only
+such method is `service(ServletRequest req, ServletResponse res)`;
+other methods, like `doGet`, can be forwarded using the
+`:exposes-methods` key of `gen-class`.  But to use Clojure on GAE (at
+least with ring/compojure), we are only interested in the `service`
+method, so this works great.
+
+If you compile e.g. the [compojure](compojure) demo and look at the
+generated class files in
+`compojure/build/exploded-app/WEB-INF/classes/migae` you will see
+that everything has been AOT-compiled.  But if you copy the Clojure
+file for any of the implementation namespaces (e.g. `echo.clj` in
+the above example) into the `classes/migae` directory, it becomes
+eligible for Clojure runtime loading, even though the generated class
+files are on disk.
+
+## servlet implementation
+
+The servlet classes specified by the `gen-class` expressions
+exemplified above do not contain any application-specific method
+implementations.  But they do contain implementation code to support
+Clojure's runtime magic, which means they contain the logic necessary
+to forward method calls to the namespace (i.e. class) specified by the
+`:impl-ns` clause.  So to complete the implementation of a servlet we
+need to provide a Clojure function, in the implementation namespace,
+to which the `service` method of the servlet can forward calls.  The
+brute force way to do this is `(defn -service [this rqst resp] ...)`,
+(see the source of `echo.clj`), but fortunately `ring` provides a
+`defservice` macro that makes this very easy.
+
+So the way it works is roughly:
+
+1.  An http request arrives at GAE.
+2.  GAE, being a servlet container, figures out which servlet is needed to service the request.
+3.  GAE locates the servlet on disk, loads it and initializes it.
+4.  GAE calls the `service` method of the servlet, passing the http request.
+5.  The compiled `service` method of the servlet forwards the request
+    to the service implementation, which is defined by
+    `ring/defservice`.  *This uses the Clojure class loader*, which is
+    what makes it possible to reload code.  At least I think that's
+    how it works.
+6.  The implementation code handles the request and generates a response.
 
 ## editing
 
