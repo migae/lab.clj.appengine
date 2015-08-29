@@ -10,13 +10,10 @@ apply plugin: 'clojure'
 sourceCompatibility = rootProject.ext.sourceCompat
 targetCompatibility = rootProject.ext.targetCompat
 
-// sourceCompatibility = JavaVersion.VERSION_1_7
-// targetCompatibility = JavaVersion.VERSION_1_7
-
 dependencies {
-    // appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.25'
-    // compile 'javax.servlet:servlet-api:2.5'
-    // compile 'org.clojure:clojure:1.7.0'
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.25'
+    compile 'javax.servlet:servlet-api:2.5'
+    compile 'org.clojure:clojure:1.7.0'
     compile 'org.clojure:math.numeric-tower:0.0.4'
     compile 'compojure:compojure:1.4.0'
     compile 'ring:ring-core:1.4.0'

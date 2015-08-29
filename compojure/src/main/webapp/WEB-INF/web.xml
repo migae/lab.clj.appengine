@@ -8,7 +8,7 @@
 
   <!-- #################### -->
   <filter-mapping>
-    <url-pattern>/</url-pattern>
+    <url-pattern>/*</url-pattern>
     <filter-name>reload-filter</filter-name>
   </filter-mapping>
   <filter>
@@ -18,12 +18,22 @@
 
   <!-- #################### -->
   <servlet-mapping>
-    <url-pattern>/*</url-pattern>
-    <servlet-name>core</servlet-name>
+    <url-pattern>/math/*</url-pattern>
+    <servlet-name>math</servlet-name>
   </servlet-mapping>
   <servlet>
-    <servlet-name>core</servlet-name>
-    <servlet-class>migae.core</servlet-class>
+    <servlet-name>math</servlet-name>
+    <servlet-class>migae.math</servlet-class>
+  </servlet>
+
+  <!-- #################### -->
+  <servlet-mapping>
+    <url-pattern>/echo/*</url-pattern>
+    <servlet-name>echo</servlet-name>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>echo</servlet-name>
+    <servlet-class>migae.echo</servlet-class>
   </servlet>
 
   <!-- #################### -->

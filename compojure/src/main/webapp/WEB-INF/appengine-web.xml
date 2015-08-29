@@ -9,4 +9,9 @@
     <!-- <property name="java.util.logging.config.file" value="WEB-INF/classes/log4j.properties"/> -->
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
   </system-properties>
+
+  <static-files>
+    <include path="/favicon.ico" />
+  </static-files>
+
 </appengine-web-app>

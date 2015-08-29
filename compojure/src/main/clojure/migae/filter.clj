@@ -13,7 +13,9 @@
    ^ServletResponse resp
    ^FilterChain chain]
   (do
-    (require 'migae.core_impl
-             :reload
-             :verbose)
+    (println "reloading ...")
+    (require 'migae.echo
+             'migae.math
+             :reload)
+             ;; :verbose)
     (.doFilter chain rqst resp)))
