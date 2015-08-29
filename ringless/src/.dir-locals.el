@@ -6,10 +6,7 @@
 ((clojure-mode
   (app . "sparky")
   (cljsrc . "/Users/gar/migae/migae/ringless/src/main/clojure")
-  ;; gradle:
   (cljdest . "/Users/gar/migae/migae/ringless/build/exploded-app/WEB-INF"))
- ;; maven: use this one:
- ;; (warroot . "/Users/gar/norc.dev/sparky/gae/target/sparky-1.0-SNAPSHOT/WEB-INF"))
 
  (js-mode
   (app . "sparky")
