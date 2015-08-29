@@ -13,7 +13,7 @@
   </filter-mapping>
   <filter>
     <filter-name>reload-filter</filter-name>
-    <filter-class>migae.filter</filter-class>
+    <filter-class>migae.reloader</filter-class>
   </filter>
 
   <!-- #################### -->

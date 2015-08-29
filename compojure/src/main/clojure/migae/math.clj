@@ -6,6 +6,8 @@
             [ring.util.servlet :as ring]
             [ring.middleware.defaults :refer :all]))
 
+(println "ring reloading math")
+
 (defroutes math-routes
   (context
    "/math" []
