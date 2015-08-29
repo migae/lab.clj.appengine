@@ -2,6 +2,25 @@
 
 Clojure on Google App Engine
 
+This project originated as an attempt to improve
+[appengine-magic](https://github.com/gcv/appengine-magic), but
+eventually I decided to take an entirely different approach.  A major
+reason for this is just that Google switched to a `gradle`-based build
+a while back, which makes it possible to get a quasi-repl going
+without going through any of the contortions appengine-magic was
+forced into working with the Ant-based build structure.  I also wanted
+to break out each service library into an independent library.
+
+# libraries
+
+Not ready for primetime, but you can poke around in
+e.g. [datastore](https://github.com/migae/datastore) or other repos in
+[migae](https://github.com/migae).
+
+These originated from
+[appengine-magic](https://github.com/gcv/appengine-magic), but have
+turned into something else.
+
 # examples
 
 * [ringless](ringless) - simple servlet using only java interop, no ring/compojure
