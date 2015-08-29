@@ -1,0 +1,39 @@
+// repositories {
+//       maven { url 'http://clojars.org/repo' }
+// }
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'appengine'
+apply plugin: 'clojure'
+
+sourceCompatibility = rootProject.ext.sourceCompat
+targetCompatibility = rootProject.ext.targetCompat
+
+dependencies {
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.25'
+    compile 'javax.servlet:servlet-api:2.5'
+    compile 'org.clojure:clojure:1.7.0'
+    compile 'org.clojure:math.numeric-tower:0.0.4'
+    compile 'ring:ring-core:1.4.0'
+    compile 'ring:ring-devel:1.4.0'
+    compile 'ring:ring-servlet:1.4.0'
+    compile 'ring:ring-defaults:0.1.5'
+}
+
+appengine {
+	  // use 0.0.0.0 to test android
+    httpAddress = '0.0.0.0'
+    // jvmFlags =
+    downloadSdk = true
+    // warDir = target
+    appcfg {
+        oauth2 = true
+    }
+}
+
+clojure {
+    warnOnReflection = true
+    aotCompile = true
+    // output.classesDir ??
+}
