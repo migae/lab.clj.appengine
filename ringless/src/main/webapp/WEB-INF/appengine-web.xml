@@ -11,6 +11,7 @@
   </system-properties>
 
   <static-files>
+    <include path="/index.html" />
     <include path="/favicon.ico" />
   </static-files>
 

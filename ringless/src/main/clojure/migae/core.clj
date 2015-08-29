@@ -7,12 +7,12 @@
       (.matches path "^/foo/ba.")
       (do
         (.setContentType rsp "text/html")
-        (.println r "<h1>Hello, GAE, from the core servlet regex '/foo/ba.'</h1>")
+        (.println r "<h1>Hello GAE, from the core servlet path regex '/foo/ba.'</h1>")
         )
       (.matches path "^/dump$")
       (do
         (.setContentType rsp "text/html")
-        (.println r "<h1>Hello, GAE, from the core servlet /dump.</h1>")
+        (.println r "<h1>Hello GAE, from the core servlet path '/dump'.</h1>")
         (.println r "<ul>")
         (.println r (str "<li>URL: " (.getRequestURL req) "</li>"))
         (.println r (str "<li>URI: " (.getRequestURI req) "</li>"))
@@ -23,5 +23,5 @@
       :else
       (do
         (.setContentType rsp "text/html")
-        (.println r (str "<h1>Hello, GAE, from the core servlet at " path ".</h1>"))))
+        (.println r (str "<h1>Hello GAE, the default handler, path: '" path "'.</h1>"))))
 ))
