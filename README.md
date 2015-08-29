@@ -90,9 +90,20 @@ need to provide a Clojure function, in the implementation namespace,
 to which the `service` method of the servlet can forward calls.  The
 brute force way to do this is `(defn -service [this rqst resp] ...)`,
 (see the source of `echo.clj`), but fortunately `ring` provides a
-`defservice` macro that makes this much easier.
+`defservice` macro that makes this much easier:
 
-So the way it works is roughly:
+``` java
+(defroutes echo-routes
+...
+  )
+(ring/defservice
+   (-> (routes
+        echo-routes)
+       (wrap-defaults api-defaults)
+       ))
+```
+
+In summary, the way it works is roughly:
 
 1.  An http request arrives at GAE.
 2.  GAE, being a servlet container, figures out which servlet is needed to service the request.
