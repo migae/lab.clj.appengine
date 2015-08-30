@@ -1,4 +1,4 @@
-\# migae
+# migae
 
 Clojure on Google App Engine
 
