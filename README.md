@@ -38,7 +38,7 @@ a wrapper on [Swagger](http://swagger.io/)
 # quasi-repl
 
 GAE is basically a servlet container.  Due to security constraints,
-GAE prevents access to anything outside of the runtime context; for
+GAE prohibits access to anything outside of the runtime context; for
 the dev server under the `gradle` build system, this means
 `<projroot>/build/exploded-app/`.  The `gradle` build system creates
 this context dynamically, at compile time (`./gradlew clean` deletes
@@ -89,14 +89,23 @@ demo:
 
 That's all there is to it.  Under AOT compilation, the `:name` clause
 names the generated servlet class, and the `:impl-ns` clause names the
-Clojure implementation namespace.  At runtime, public HttpServlet
-methods will be forwarded to the implementation namespace.  The only
-such method is `service(ServletRequest req, ServletResponse res)`; the
-other HttpServlet methods, like `doGet`, are `protected`, but they can
-be explicitly forwarded using the `:exposes-methods` key of
-`gen-class`.  But to use Clojure on GAE (at least with
-ring/compojure), we are only interested in the `service` method, so
-this works great.
+Clojure implementation namespace.  Here we've used the same name for
+both.  For reasons I don't completely understand, this has the
+practical effect of enabling dynamic reloading and evaluation of the
+Clojure source code in the implementation namespace, even though that
+has the same name as the AOT-compiled class.  In effect, `:impl-ns
+foo.bar` seems to be telling the Clojure compiler to arrange for
+functions in that namespace to be called (loaded) by Clojure rather
+than by the servlet containers's class loader.  Note that if you omit
+the `:impl-ns` clause, dynamic reload and eval will not be enabled.
+
+At runtime, public HttpServlet methods will be forwarded to the
+implementation namespace.  The only such method is
+`service(ServletRequest req, ServletResponse res)`; the other
+HttpServlet methods, like `doGet`, are `protected`, but they can be
+explicitly forwarded using the `:exposes-methods` key of `gen-class`.
+But to use Clojure on GAE (at least with ring/compojure), we are only
+interested in the `service` method, so this works great.
 
 If you compile e.g. the [compojure](compojure) demo and look at the
 generated class files in
@@ -106,6 +115,10 @@ file for any of the implementation namespaces (e.g. `echo.clj` in
 the above example) into the `classes/migae` directory, it becomes
 eligible for Clojure runtime loading, even though the generated class
 files are on disk.
+
+*CAVEAT* You do have to restart the server if you change your
+ `gen-class` code (in `servlets.clj`) or you change the configuration
+ files `web.xml` or `appengine-web.xml`.  But that happens rarely.
 
 ## servlet implementation
 
@@ -165,6 +178,18 @@ will copy it to `WEB-INF/classes`, and refreshing the webpage will run
 the filter, which will reload the source file.  Note that you can
 control reloading by changing the `<url-pattern>` of the filter mapping in
 `web.xml`.
+
+For example, if you change
+
+```
+migae/ringless/src/main/clojure/migae/core.clj
+```
+
+then it be copied to
+
+```
+migae/ringless/build/exploded-app/WEB-INF/classes/migae/core.clj
+```
 
 This is required because the GAE dev server will only look in
 `build/exploded-app/` for files.  Since the `build/` hiearchy is
