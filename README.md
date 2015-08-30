@@ -197,17 +197,19 @@ constructed dynamically at compile/run time, we cannot edit in place -
 we have to copy from the `src` tree to the `build/exploded-app` tree.
 
 To verify that everything is working, run the dev server for the
-[compojure](compojure) demo subproject (`$ ./gradlew s:aRun`) and load
+[compojure](compojure) demo subproject (`$ ./gradlew c:aRun`) and load
 `localhost:8080` in your browser.  Visit `/echo/hello/bob`, then edit
 `echo.clj` and change something visible, e.g. change "Hello" to
 "Howdy".  Then reload the webpage and you should see the change
 (almost) immediately.
 
-Try adding a route, e.g. within the `math` context:
+Try adding a route, e.g. in `math.clj` within the `math` context:
 ```
-    (GET* "/foo" []
-          (ok "bar"))
+    (GET "/foo" []
+          (str "bar"))
 ```
+
+Then load `localhost:8080/math/foo` and you should see "bar" in your browser.
 
 Needless to say, before uploading to the GAE servers, you should
 disable the filter and run `./gradlew clean` to remove the `.clj` files.

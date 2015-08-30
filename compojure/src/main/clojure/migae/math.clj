@@ -15,6 +15,8 @@
         (let [x (read-string (get params "x"))
               y (read-string (get params "y"))]
           (str (+ x y) "\n")))
+   (GET "/foo" []
+         (str "bar"))
    (POST "/minus" [x y :as req]        ; body params
          (str (- (read-string x) (read-string y)) "\n"))
    (GET "/times/:x/:y" [x y]           ; named (path) params
