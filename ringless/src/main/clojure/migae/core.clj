@@ -4,10 +4,10 @@
   (let [path (.getRequestURI req)
         r (.getWriter rsp)]
     (cond
-      (.matches path "^/foo/ba.")
+      (.matches path "^/hello/.+")
       (do
         (.setContentType rsp "text/html")
-        (.println r "<h1>Hello GAE, from the core servlet path regex '/foo/ba.'</h1>")
+        (.println r "<h1>Hello GAE, from the core servlet path regex '/hello/.+'</h1>")
         )
       (.matches path "^/dump$")
       (do
