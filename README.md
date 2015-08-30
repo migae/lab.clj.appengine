@@ -35,6 +35,20 @@ for those services are under development.
 on GAE.  [compojure-api](https://github.com/metosin/compojure-api) is
 a wrapper on [Swagger](http://swagger.io/)
 
+# running
+
+We use the gradle build system.  From the root dir (not the project
+subdir), run `$ ./gradlew tasks` to get a list of tasks.  The
+subprojects are defined in `settings.gradle`.  Run project-specific
+tasks like so: `$ ./gradlew :<proj>:<task>`.  For example, to run the
+minimal project with the dev server, run:
+
+```
+$ ./gradlew :compojure:appengineRun
+```
+
+You can abbreviate both subprojects and tasks, so `$ ./gradlew :c:aRun` will work too.
+
 # quasi-repl
 
 GAE is basically a servlet container.  Due to security constraints,
@@ -213,18 +227,4 @@ Then load `localhost:8080/math/foo` and you should see "bar" in your browser.
 
 Needless to say, before uploading to the GAE servers, you should
 disable the filter and run `./gradlew clean` to remove the `.clj` files.
-
-# running
-
-We use the gradle build system.  From the root dir (not the project
-subdir), run `$ ./gradlew tasks` to get a list of tasks.  The
-subprojects are defined in `settings.gradle`.  Run project-specific
-tasks like so: `$ ./gradlew :<proj>:<task>`.  For example, to run the
-minimal project with the dev server, run:
-
-```
-$ ./gradlew :compojure:appengineRun
-```
-
-You can abbreviate both subprojects and tasks, so `$ ./gradlew :c:aRun` will work too.
 
