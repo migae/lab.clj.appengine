@@ -2,6 +2,23 @@
 
 Clojure on Google App Engine
 
+This project describes a technique for using Clojure with the Google
+App Engine.  It's a technique rather than a library; you don't need
+any specialized code just to get running on the GAE, you just need to
+know how to structure your code for a Servlet environment and
+configure your development environment.  You still get all the groovy
+Clojure stuff like Ring and Compojure.
+
+Of course, if you want to use AppEngine services, you'll need a
+wrapper on the Google libraries, unless you want to use Java interop
+facilities to work with the Google libs directly.  Some libraries are
+under (slow) development - the
+[Datastore](https://github.com/migae/datastore) lib is furthest along,
+and stable enough to at least play with.  A demo will be added to this
+project, soon, I hope.
+
+### previous approaches
+
 This project originated as an attempt to improve
 [appengine-magic](https://github.com/gcv/appengine-magic), but
 eventually I decided to take an entirely different approach.  A major
@@ -9,7 +26,40 @@ reason for this is just that Google switched to a `gradle`-based build
 a while back, which makes it possible to get a quasi-repl going
 without going through any of the contortions appengine-magic was
 forced into working with the Ant-based build structure.  I also wanted
-to break out each service library into an independent library.
+to break out each service library into an independent library, and
+develop my code on the dev server only.  Also, from the looks of
+things the Appengine-magic project has been moribund for quite some
+time and it's doesn't seem likely that the original developer will be
+getting back to it any time soon.
+
+Most importantly, appengine-magic implements a Jetty-based repl, so
+you're not using the official Google dev server if you use that.
+Before deploying, you'll have to test everything using the dev server,
+which means you'll have to bounce the server to make changes, which is
+_very_ cumbersome.  Even if you can tolerate that, given that GAE runs
+on a very specialized server (emulated more-or-less faithfully in the
+dev server), it seems like a dubious idea to develop code on in some
+other environment and then migrate it to the dev server environment.
+
+(Having said all that, I'm grateful to the developer of AEMagic, who
+deserves a lot of credit for putting it together and making it
+available; I learned a lot from studying that code, and I'm using some
+of it to develop migae service libraries.)
+
+You can find various blog posts on the web showing how to get started
+with Clojure-on-GAE, but most of the ones I've found are woefully
+outdated.  A relatively recent one is at
+[Clojure in the cloud. Part 1: Google App Engine](http://flowa.fi/blog/2014/04/25/clojure-gae-howto.html?lang=en).
+Unfortunately, the approach described there suffers from some of the
+same infelicities as the appengine-magic approach: use an external
+server (jetty, ring-server) as a repl, then migrate your code to the
+GAE dev server environment.  
+
+With the migae approach, you only ever use the dev server, but you
+only rarely need to restart it - the technique described here gives
+you a quasi-repl environment, wherein you only need reload your
+webpage to see your changes.  So you can develop your servlet logic
+with minimal overhead.
 
 # libraries
 
@@ -41,7 +91,7 @@ We use the gradle build system.  From the root dir (not the project
 subdir), run `$ ./gradlew tasks` to get a list of tasks.  The
 subprojects are defined in `settings.gradle`.  Run project-specific
 tasks like so: `$ ./gradlew :<proj>:<task>`.  For example, to run the
-minimal project with the dev server, run:
+compojure project with the dev server, run:
 
 ```
 $ ./gradlew :compojure:appengineRun
