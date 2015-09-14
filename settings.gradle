@@ -1,1 +1,1 @@
-include ':ringless', ':ringish', ':compojure', ':swagger'
+include ':ringless', ':ringish', ':compojure', ':swagger', 'modules'

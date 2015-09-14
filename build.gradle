@@ -1,6 +1,4 @@
-// task wrapper(type: Wrapper) {
-//     gradleVersion = '2.6'
-// }
+// https://github.com/GoogleCloudPlatform/gradle-appengine-plugin
 
 buildscript {
     repositories {
@@ -21,6 +19,7 @@ allprojects {
 	mavenCentral()
         jcenter()
 	maven { url 'http://clojars.org/repo' }
+	mavenLocal()  // ~/.m2, for locally installed stuff
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
@@ -30,6 +29,7 @@ allprojects {
 }
 
 ext {
+    applicationId =  "migae.examples"
     sourceCompat = JavaVersion.VERSION_1_7
     targetCompat = JavaVersion.VERSION_1_7
 }

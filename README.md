@@ -99,6 +99,8 @@ $ ./gradlew :compojure:appengineRun
 
 You can abbreviate both subprojects and tasks, so `$ ./gradlew :c:aRun` will work too.
 
+For more on using the gradle appengine plugin see link:http://rominirani.com/2014/08/15/gradle-tutorial-part-5-gradle-app-engine-plugin/[Gradle Tutorial : Part 5 : Gradle App Engine Plugin]
+
 # quasi-repl
 
 GAE is basically a servlet container.  Due to security constraints,
