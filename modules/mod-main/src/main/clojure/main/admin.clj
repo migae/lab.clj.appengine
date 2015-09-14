@@ -17,45 +17,56 @@
             [ring.util.servlet :as servlet]
             ))
 
-(println "loading mod-main main.admin")
+(println "loading mod-main: main.admin")
 ;
-(defn the-docs []
+(defn admin-docs []
   (swagger-docs
    "/admin/swagger.json"
    {:info {:title "Main Admin API"
            :description "Admin API for main backend"}
-    :tags [{:name "widgets", :description "widget admin"}
-           {:name "users", :description "users admin"}]}))
+    :tags [{:name "device", :description "Device Administration"}
+           {:name "user", :description "User Administration"}]}))
 
 (defapi admin-api
   (swagger-ui "/admin"
               :swagger-docs "/admin/swagger.json")
-  (the-docs)
+  (admin-docs)
 
   {:formats [:edn]}
 
   (context* "/admin" []
-            :tags ["widgets"]
+            :tags ["device"]
 
     (GET* "/widgets" []
+          :summary "administer widgets"
+;;          :body [...]
+          :return String
           (log/trace "GET* widgets")
-          (str (format "<h1>Widgets</h1>")
-               "\n\n<a href='/'>blah blah</a>"))
+          (ok (str (format "<h1>Widgets</h1>")
+                   "\n\n<a href='/'>blah blah</a>")))
 
-    (route/not-found "<h1>Page not found</h1>"))
+    (GET* "/gadgets" []
+          :summary "administer gadgets"
+          (log/trace "GET* gadgets")
+          (str (format "<h1>Gadgets</h1>")
+               "\n\n<a href='/'>blah blah</a>")))
 
-  (context* "/users" []
-    :tags ["users"]
+  (context* "/user" []
+    :tags ["user"]
 
     (GET* "/registrants" []
+          :summary "list registered users"
          (str (format "<h1>REGISTRANTS</h1>")
               "\n\n<a href='/'>blah blah</a>"))
 
-    (route/not-found "<h1>Page not found</h1>"))
-  )
+    (GET* "/:user" [user]
+          :summary "get info about user"
+          (ok (str (format "<h1>HI, %s</h1>" user))))
+
+    (route/not-found "<h1>Page not found</h1>")))
 
 (servlet/defservice
-  (-> #'admin-api
+  (-> (routes admin-api)
       wrap-params
       wrap-file-info
       ))

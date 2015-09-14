@@ -8,7 +8,7 @@
 
   <!-- #################### -->
   <filter-mapping>
-    <url-pattern>/work/*</url-pattern>
+    <url-pattern>/*</url-pattern>
     <filter-name>reload-filter</filter-name>
   </filter-mapping>
   <filter>

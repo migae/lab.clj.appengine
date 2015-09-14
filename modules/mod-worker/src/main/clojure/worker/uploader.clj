@@ -64,16 +64,16 @@
 
 (defn the-docs []
   (swagger-docs
-   "/worker/swagger.json"
+   "/work/swagger.json"
    {:info {:title "Migae Worker Module Uploader API"
            :description "Uploader API for worker backend"}
-    :tags [{:name "upload", :description "upload"}
-           {:name "users", :description "user admin"}]}))
+    :tags [{:name "worker", :description "worker functions"}
+           #_{:name "users", :description "user admin"}]}))
 
 (defapi worker-api
 
-  (swagger-ui "/worker"
-              :swagger-docs "/worker/swagger.json")
+  (swagger-ui "/work"
+              :swagger-docs "/work/swagger.json")
   (the-docs)
 
   {:formats [:edn]}
@@ -97,8 +97,9 @@
             ))
 
    (GET* "/:nm" [nm :as uri]
+         :summary "do some work"
         (log/trace "GOT WORKER!! at " uri)
-        (-> (r/response (pr-str (str "Hi, " nm "y")))
+        (-> (r/response (pr-str (str "Howdy, " nm)))
             (r/status 200)))
 
    ;; (rfn {m :request-method, u :uri, ctx :context,  pi :path-info :as req}

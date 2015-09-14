@@ -8,7 +8,7 @@
 
   <!-- #################### -->
   <filter-mapping>
-    <url-pattern>/admin/*</url-pattern>
+    <url-pattern>/*</url-pattern>
     <filter-name>reload-filter</filter-name>
   </filter-mapping>
   <filter>
@@ -16,14 +16,14 @@
     <filter-class>main.reloader</filter-class>
   </filter>
 
-  <filter-mapping>
-    <url-pattern>/core/*</url-pattern>
-    <filter-name>reload-filter</filter-name>
-  </filter-mapping>
-  <filter>
-    <filter-name>reload-filter</filter-name>
-    <filter-class>main.reloader</filter-class>
-  </filter>
+  <!-- <filter-mapping> -->
+  <!--   <url-pattern>/core/*</url-pattern> -->
+  <!--   <filter-name>reload-filter</filter-name> -->
+  <!-- </filter-mapping> -->
+  <!-- <filter> -->
+  <!--   <filter-name>reload-filter</filter-name> -->
+  <!--   <filter-class>main.reloader</filter-class> -->
+  <!-- </filter> -->
 
   <!-- #################### -->
   <servlet-mapping>
@@ -36,7 +36,16 @@
   </servlet>
 
   <servlet-mapping>
-    <url-pattern>/core/*</url-pattern>
+    <url-pattern>/user/*</url-pattern>
+    <servlet-name>admin</servlet-name>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>admin</servlet-name>
+    <servlet-class>main.admin</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <url-pattern>/main/*</url-pattern>
     <servlet-name>core</servlet-name>
   </servlet-mapping>
   <servlet>

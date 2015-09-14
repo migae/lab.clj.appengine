@@ -21,15 +21,15 @@
 
 (defn the-docs []
   (swagger-docs
-   "/core/swagger.json"
-   {:info {:title "Main Core API"
-           :description "Core API for main backend"}
-    :tags [{:name "foo", :description "core foo stuff"}
-           {:name "frob", :description "core frobnication"}]}))
+   "/main/swagger.json"
+   {:info {:title "Main Module API"
+           :description "API for main backend"}
+    :tags [{:name "foo", :description "main foo stuff"}
+           {:name "frob", :description "main frobnication"}]}))
 
-(defapi core-api
-  (swagger-ui "/core"
-              :swagger-docs "/core/swagger.json")
+(defapi main-api
+  (swagger-ui "/main"
+              :swagger-docs "/main/swagger.json")
   (the-docs)
 
   {:formats [:edn]}
@@ -58,7 +58,7 @@
   )
 
 (servlet/defservice
-  (-> #'core-api
+  (-> #'main-api
       wrap-params
       wrap-file-info
       ))

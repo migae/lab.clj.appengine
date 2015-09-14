@@ -21,7 +21,7 @@
    ^ServletRequest rqst
    ^ServletResponse resp
    ^FilterChain chain]
-  (println "running doFilter")
+  (println "running mod-main doFilter")
   (doseq [ns-sym (main-namespaces)]
     (do
       (println "ns changed: " ns-sym (type ns-sym))
