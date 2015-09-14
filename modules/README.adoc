@@ -1,6 +1,8 @@
 = migae modules
 
-Implementing Google AppEngine modules in Clojure.
+Implementing
+link:https://cloud.google.com/appengine/docs/java/modules/[Google
+AppEngine modules] in Clojure.
 
 
 
