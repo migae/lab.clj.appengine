@@ -13,14 +13,14 @@ Of course, if you want to use AppEngine services, you'll need a
 wrapper on the Google libraries, unless you want to use Java interop
 facilities to work with the Google libs directly.  Some libraries are
 under (slow) development - the
-[Datastore](https://github.com/migae/datastore) lib is furthest along,
+link:https://github.com/migae/datastore[Datastore] lib is furthest along,
 and stable enough to at least play with.  A demo will be added to this
 project, soon, I hope.
 
 ### previous approaches
 
 This project originated as an attempt to improve
-[appengine-magic](https://github.com/gcv/appengine-magic), but
+link:https://github.com/gcv/appengine-magic[appengine-magic], but
 eventually I decided to take an entirely different approach.  A major
 reason for this is just that Google switched to a `gradle`-based build
 a while back, which makes it possible to get a quasi-repl going
@@ -49,11 +49,11 @@ of it to develop migae service libraries.)
 You can find various blog posts on the web showing how to get started
 with Clojure-on-GAE, but most of the ones I've found are woefully
 outdated.  A relatively recent one is at
-[Clojure in the cloud. Part 1: Google App Engine](http://flowa.fi/blog/2014/04/25/clojure-gae-howto.html?lang=en).
-Unfortunately, the approach described there suffers from some of the
-same infelicities as the appengine-magic approach: use an external
-server (jetty, ring-server) as a repl, then migrate your code to the
-GAE dev server environment.  
+link:http://flowa.fi/blog/2014/04/25/clojure-gae-howto.html?lang=en[Clojure
+in the cloud. Part 1: Google App Engine].  Unfortunately, the approach
+described there suffers from some of the same infelicities as the
+appengine-magic approach: use an external server (jetty, ring-server)
+as a repl, then migrate your code to the GAE dev server environment.
 
 With the migae approach, you only ever use the dev server, but you
 only rarely need to restart it - the technique described here gives
@@ -64,11 +64,11 @@ with minimal overhead.
 # libraries
 
 Not ready for primetime, but you can poke around in
-e.g. [datastore](https://github.com/migae/datastore) or other repos in
-[migae](https://github.com/migae).
+e.g. link:https://github.com/migae/datastore[datastore] or other repos
+in link:https://github.com/migae[migae].
 
 These originated from
-[appengine-magic](https://github.com/gcv/appengine-magic), but have
+link:https://github.com/gcv/appengine-magic[appengine-magic], but have
 turned into something else.
 
 # examples
@@ -77,13 +77,22 @@ Currently these examples only demonstrate Clojure on GAE; they do not
 use any of the services libraries (datastore, memcache, etc.)  Demos
 for those services are under development.
 
-* [ringless](ringless) - simple servlet using only java interop, no ring/compojure
-* [ringish](ringish) -  servlet using [ring](https://github.com/ring-clojure/ring)
-* [compojure](compojure) - [compojure](https://github.com/weavejester/compojure) on GAE example, two servlets
-* [swagger](swagger) -
-[compojure-api-examples](https://github.com/metosin/compojure-api-examples)
-on GAE.  [compojure-api](https://github.com/metosin/compojure-api) is
-a wrapper on [Swagger](http://swagger.io/)
+* link:ringless[ringless] - simple servlet using only java interop, no ring/compojure
+* link:ringish[ringish] -  servlet using [ring](https://github.com/ring-clojure/ring)
+* link:compojure[compojure] - [compojure](https://github.com/weavejester/compojure) on GAE example, two servlets
+* link:swagger[swagger] -
+link:https://github.com/metosin/compojure-api-examples[compojure-api-examples]
+on GAE.  link:https://github.com/metosin/compojure-api[compojure-api] is
+a wrapper on link:http://swagger.io/[Swagger]
+
+The above examples just demonstrate how to get a Clojure webapp
+running on GAE.  The following examples demonstrate how to use GAE
+services.
+
+* link:modules[modules] - see
+  link:https://cloud.google.com/appengine/docs/java/modules[App Engine
+  Modules in Java].  Implementing modules is mainly a matter of
+  configuration.  This example shows how to do it.
 
 # running
 
@@ -94,10 +103,16 @@ tasks like so: `$ ./gradlew :<proj>:<task>`.  For example, to run the
 compojure project with the dev server, run:
 
 ```
+$ cd compojure
 $ ./gradlew :compojure:appengineRun
 ```
 
 You can abbreviate both subprojects and tasks, so `$ ./gradlew :c:aRun` will work too.
+
+.modules
+[NOTE]
+*Note*: running modularized apps is slightly different; see the
+link:modules/Readme.adoc[modules] demo for more info.
 
 For more on using the gradle appengine plugin see link:http://rominirani.com/2014/08/15/gradle-tutorial-part-5-gradle-app-engine-plugin/[Gradle Tutorial : Part 5 : Gradle App Engine Plugin]
 
@@ -110,6 +125,11 @@ the dev server under the `gradle` build system, this means
 this context dynamically, at compile time (`./gradlew clean` deletes
 it).
 
+.modules
+[NOTE]
+*Note*: modularized apps hava a slightly different structure; see the
+link:modules/Readme.adoc[modules] demo for more info.
+
 This means that the Clojure runtime running in a GAE app can only load
 files within that context; it cannot load from the standard
 `<projroot>/src/main/clojure` path, for example.  Furthermore,
@@ -119,12 +139,24 @@ for compiled bytecode on disk when it needs to load a servlet.
 Fortunately, a sufficiently perverse mind can easily get around these
 two problems.  To make changed source code available for reloading by
 the Clojure runtime, we arrange to copy files from the source tree to
-the runtime context whenever they are edited and saved.  To make sure
-that AOT compilation does not interfere with code reloading, we split
-servlet definitions (using `gen-class`) from implementations.  And to
-make sure they get reloaded we use the standard `ns-tracker` library
-in a Java Servlet Filter that intercepts all HTTP requests and reloads
-changed code before forwarding requests to handlers.
+the runtime context whenever they are edited and saved.
+
+[NOTE]
+Previously I used an emacs hack to accomplish this, but I've switched
+to a third-party filesystem monitor,
+link:https://github.com/emcrisostomo/fswatch[fswatch].  See the
+link:compojure/fswatch.sh[fswatch.sh] shell scripts in each demo
+project; **you must run these to get a quasi-repl**.  This is tested on OS
+X, and should run on Linux; if you are a Windows user I can't help
+you, but you should be able to find something similar to fswatch for
+Windows.
+
+To make sure that AOT compilation does not interfere with code
+reloading, we split servlet definitions (using `gen-class`) from
+implementations.  And to make sure they get reloaded we use the
+standard `ns-tracker` library in a Java Servlet Filter that intercepts
+all HTTP requests and reloads changed code before forwarding requests
+to handlers.
 
 Oh yeah, the other thing is we use `gradle` rather than `leiningen`.
 I love leiningen, but using it doesn't make sense for GAE; the
@@ -136,7 +168,7 @@ multiple subprojects, build flavors, etc.)
 
 The `gen-class` function allows us to define all of our servlets in a
 single Clojure source file, which by convention we're calling
-`servlets.clj`.  Here's an example from the [compojure](compojure)
+`servlets.clj`.  Here's an example from the link:compojure[compojure]
 demo:
 
 ``` java
@@ -173,14 +205,18 @@ explicitly forwarded using the `:exposes-methods` key of `gen-class`.
 But to use Clojure on GAE (at least with ring/compojure), we are only
 interested in the `service` method, so this works great.
 
-If you compile e.g. the [compojure](compojure) demo and look at the
+If you compile e.g. the link:compojure[compojure] demo and look at the
 generated class files in
-`compojure/build/exploded-app/WEB-INF/classes/migae` you will see
-that everything has been AOT-compiled.  But if you copy the Clojure
-file for any of the implementation namespaces (e.g. `echo.clj` in
-the above example) into the `classes/migae` directory, it becomes
-eligible for Clojure runtime loading, even though the generated class
-files are on disk.
+`compojure/build/exploded-app/WEB-INF/classes/migae` you will see that
+everything has been AOT-compiled.  But if you copy the Clojure file
+for any of the implementation namespaces (e.g. `echo.clj` in the above
+example) into the `classes/migae` directory, it becomes eligible for
+Clojure runtime loading, even though the generated class files are on
+disk.
+
+[NOTE]
+To compile from the compojure directory: `$ ../gradlew
+:compojure:aEx`; aEx is an abbrev for task "appengineExplodeApp".
 
 *CAVEAT* You do have to restart the server if you change your
  `gen-class` code (in `servlets.clj`) or you change the configuration
@@ -227,6 +263,12 @@ In summary, the way it works is roughly:
 
 ## editing
 
+
+[NOTE]
+The emacs hack described here works, but a better way to go is to use
+a filesystem monitor like
+link:https://github.com/emcrisostomo/fswatch[fswatch] (see above).
+
 Unfortunately, the technique described here only works for emacs.  But
 it should be easy enough to adapt it.
 
@@ -262,12 +304,19 @@ This is required because the GAE dev server will only look in
 constructed dynamically at compile/run time, we cannot edit in place -
 we have to copy from the `src` tree to the `build/exploded-app` tree.
 
+[NOTE]
+
+**WARNING:** link:modules[modules] use a slightly different structure, inserting the
+  module name and version into the path, e.g. `exploded-app/my-module-0.1.0/WEB-INF/classes/...`
+
+
 To verify that everything is working, run the dev server for the
-[compojure](compojure) demo subproject (`$ ./gradlew c:aRun`) and load
-`localhost:8080` in your browser.  Visit `/echo/hello/bob`, then edit
-`echo.clj` and change something visible, e.g. change "Hello" to
-"Howdy".  Then reload the webpage and you should see the change
-(almost) immediately.
+link:compojure[compojure] demo subproject (`$ ./gradlew c:aRun`) and
+load `localhost:8080` in your browser.  If you are using a filesytem
+monitor, fire it up (e.g. run `$ ./fswatch.sh` in another terminal
+session).  Visit `/echo/hello/bob`, then edit `echo.clj` and change
+something visible, e.g. change "Hello" to "Howdy".  Then reload the
+webpage and you should see the change (almost) immediately.
 
 Try adding a route, e.g. in `math.clj` within the `math` context:
 ```
