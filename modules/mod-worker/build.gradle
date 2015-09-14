@@ -1,0 +1,70 @@
+repositories {
+      maven { url 'http://clojars.org/repo' }
+}
+
+buildscript {
+    repositories {
+      jcenter()
+      mavenCentral()
+      maven { url 'http://clojars.org/repo' }
+    }
+    dependencies {
+     classpath 'com.google.appengine:gradle-appengine-plugin:1.9.23'
+     classpath 'clojuresque:clojuresque:1.7.0'
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    repositories { mavenCentral() }
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'appengine'
+apply plugin: 'clojure'
+
+sourceCompatibility = rootProject.ext.sourceCompat
+targetCompatibility = rootProject.ext.targetCompat
+
+dependencies {
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.26'
+    compile 'javax.servlet:servlet-api:2.5'
+
+    compile 'org.clojure:clojure:1.7.0'
+    compile 'org.clojure:tools.reader:0.8.16'
+    compile 'org.clojure:tools.logging:0.2.3'
+    compile 'ns-tracker:ns-tracker:0.3.0'
+
+    compile 'metosin:compojure-api:0.22.0'
+    compile 'ns-tracker:ns-tracker:0.3.0'
+    compile 'ring:ring-core:1.4.0'
+    compile 'ring:ring-devel:1.4.0'
+    compile 'ring:ring-servlet:1.4.0'
+    compile 'ring:ring-defaults:0.1.5'
+    compile 'fogus:ring-edn:0.2.0'
+
+    compile 'commons-io:commons-io:2.4'
+    compile 'commons-fileupload:commons-fileupload:1.3.1'
+
+    // compile 'org.mobileink:migae.datastore:0.3.2-SNAPSHOT'
+}
+
+appengine {
+    daemon = false
+    httpAddress = '0.0.0.0'   // to test android
+    httpPort = 8089
+    // jvmFlags =
+    appcfg {
+        oauth2 = true
+    }
+    downloadSdk = true
+    logs {
+        outputFile = file('./gae.bulk.log') // ???
+    }
+}
+
+clojure {
+    warnOnReflection = false
+    aotCompile = true
+}

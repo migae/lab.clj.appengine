@@ -1,0 +1,5 @@
+^{:migae :test}{:foo :bar}
+{:baz :buz}
+^:private ^IPersistentEntityMap {:x "another one"
+  :y "with three entries"
+    :z [1 2 3]}
