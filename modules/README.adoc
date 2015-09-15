@@ -6,13 +6,14 @@ AppEngine modules] in Clojure.
 
 == checklist
 
-Module versions may specified in:
+Module versions specified in:
 
 * module's build.gradle, version='x.y.z'
 * module's webapp/WEB-INF/appengine-web.xml
 ** <application> and <version> are ignored?
 ** <module> must match value specified in ear's application.xml?
 * ear module's src/main/application/META-INF/application.xml, as <web-uri> (also maven-application.xml)
+* fswatch.sh
 
 == notes
 
@@ -43,6 +44,7 @@ a wardir (specified in application.xml) in exploded-app.
 
 port can be specified in ear's build.gradle:
 
+```
 appengine {
     daemon = false
     httpAddress = '0.0.0.0'  // to test android
@@ -52,19 +54,24 @@ appengine {
 	...etc...
     ]
 }
+```
 
 you can name your <module> anything in appengine-web.xml, but if you
 want to specify a port for it during development, make it match the
 project dirname with suffixed version, so it will match the generated
 wardir.
 
-Summary: the (unversioned) module name is the dirname of the
-subproject root; the version is set in build.gradle; the versioned
-module name (unversioned name, hyphen, version) is used to generate
-the wardir in exploded-app/; therefore:
+= Summary
+
+The (unversioned) module name is the dirname of the subproject root;
+the version is set in build.gradle; the versioned module name
+(unversioned name, hyphen, version) is used to generate the wardir in
+exploded-app/; therefore:
 
 * set <module> in application-web.xml to the versioned name
 * do the same for <web-uri> in application.xml
+* do the same for jvmFlags in ear/build.gradle (if you want to set fixed ports for the modules)
+* do the same for fswatch.sh, so the monitor copies files to the right destination module in `ear/exploded-app`
 
 this means you have to specify the version in three places, but that's life.
 
