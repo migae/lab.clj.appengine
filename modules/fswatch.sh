@@ -4,7 +4,7 @@
 ## extracts the path relative to the current directory, and uses it to
 ## construct the target path.
 
-function dsclj {
+function modsclj {
     P=`pwd`
     ROOT=../ear/build/exploded-app
     MODULE=`basename $P`
@@ -22,7 +22,7 @@ function dsclj {
     return 0
 }
 
-function dswebapp {
+function modswebapp {
     P=`pwd`
     ROOT=../ear/build/exploded-app
     MODULE=`basename $P`
@@ -42,8 +42,8 @@ function dswebapp {
     return 0
 }
 
-export -f dsclj
-export -f dswebapp
+export -f modsclj
+export -f modswebapp
 
 ## watch clojure source
 fswatch -0 -e ".*" -i ".*clj$" \
@@ -52,7 +52,7 @@ fswatch -0 -e ".*" -i ".*clj$" \
 	src/main/clojure \
 	--format %p \
     | xargs -0 -n 1 -I {} \
-	    bash -c 'dsclj "$@"' - {} 
+	    bash -c 'modsclj "$@"' - {} 
 
 ## watch webapp  files
 # fswatch -0 -e ".*~$" \
@@ -61,4 +61,4 @@ fswatch -0 -e ".*" -i ".*clj$" \
 # 	src/main/webapp \
 # 	--format %p \
 #     | xargs -0 -n 1 -I {} \
-# 	    bash -c 'dswebapp "$@"' - {} &
+# 	    bash -c 'modswebapp "$@"' - {} &
