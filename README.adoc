@@ -1,6 +1,6 @@
-# migae
+# lab.clj.appengine
 
-Clojure on Google App Engine
+A laboratory for experimenting with Clojure on Google App Engine.
 
 This project describes a technique for using Clojure with the Google
 App Engine.  It's a technique rather than a library; you don't need
